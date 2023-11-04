@@ -3,9 +3,12 @@
 The function that returns the log message obfuscated
 """
 import re
+from typing import List
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 separator: str) -> str:
+
     """
     Obfuscate specified fields in a log message using a regular expression.
 
@@ -23,6 +26,11 @@ def filter_datum(fields, redaction, message, separator):
 
         Returns:
                 str: The log message with specified fields obfuscated.
+        Example
+        >>> filter_datum(['password', 'credit_card'], '***REDACTED***'
+        ... 'User login: theo, password: 1234, credit_card: 12345678', ', ')
+        'User login: theo, password: ***REDACTED***, credit_card:
+        ***REDACTED***',
     """
 
     regex_pattern = '|'.join(map(re.escape, fields))
