@@ -30,7 +30,8 @@ if auth:
 # Define the list of paths that dont require authorization
 excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
                   '/api/v1/forbidden/'
-                ]
+                  ]
+
 
 @app.before_request
 def before_request():
@@ -78,7 +79,6 @@ def forbidden(error) -> str:
       - 403 status_code.
     """
     return jsonify({"error": "Forbidden"}), 403
-
 
 
 if __name__ == "__main__":
