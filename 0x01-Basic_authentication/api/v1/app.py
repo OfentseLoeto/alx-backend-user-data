@@ -20,7 +20,7 @@ auth = None
 # based on the environmental variable Auth_type
 auth_type = getenv("AUTH_TYPE")
 
-if auth:
+if auth_type:
     if auth_type == "auth":
         # Import and create an instance of auth
         from api.v1.auth.auth import Auth
@@ -42,7 +42,7 @@ def before_request():
         return
 
     if request.path not in excluded_paths:
-        if auth.require_auth(request_path, excluded_paths):
+        if auth.require_auth(request.path, excluded_paths):
             # Checking if authorization header is missing
             if auth.authorization_header(request) is None:
                 abort(401)
