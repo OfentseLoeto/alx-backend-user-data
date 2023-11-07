@@ -30,7 +30,6 @@ class Auth:
         # Ensure that path end with trailing slash for accurate matching.
         if path.endswith('/'):
             path += '/'
-            return False
 
         for excluded_path in excluded_paths:
             if path.startswith(excluded_path):
