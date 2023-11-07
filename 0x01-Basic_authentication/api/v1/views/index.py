@@ -35,3 +35,14 @@ def unauthorized_ep() -> str:
       - Unthorized error with status code.
     """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden_ep() -> str:
+    """
+    GET /api/v1/forbidden
+
+    returns:
+      - Forbidden error with the status_code 403.
+    """
+    abort(403)
