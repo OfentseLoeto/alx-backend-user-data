@@ -28,13 +28,11 @@ class Auth:
             return True
 
         # Ensure that path end with trailing slash for accurate matching.
-        if path.endswith('/'):
-            path += '/'
-
-        for excluded_path in excluded_paths:
-            if path.startswith(excluded_path):
-                return False
-        return True
+        path_with_slash = path if path.endswith('/') else path + '/'
+        exluded_paths = [p if p.endswith('/') else p + '/' for p in
+                         excluded_paths
+                         ]
+        return path_with_slash not in excluded_paths
 
     def authorization_header(self, request=None) -> str:
         """
