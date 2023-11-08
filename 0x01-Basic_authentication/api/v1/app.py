@@ -8,6 +8,7 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
 from api.v1.auth.auth import Auth
+from api.v1.auth.basic_auth import BasicAuth
 
 
 app = Flask(__name__)
@@ -21,16 +22,13 @@ auth = None
 auth_type = getenv("AUTH_TYPE")
 
 if auth_type:
-    if auth_type == "auth":
-        # Import and create an instance of auth
+    if auth_type == "basic_auth":
+        # Create an instance of basic_auth if auth_type is basic_auth.
+        auth = BasicAuth()
+    else:
+        # If AUTH_TYPE is not basic_auth, use Auth
         from api.v1.auth.auth import Auth
         auth = Auth()
-
-
-# Define the list of paths that dont require authorization
-excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                  '/api/v1/forbidden/'
-                  ]
 
 
 @app.before_request
