@@ -16,7 +16,7 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 # Initialize Auth to None
 auth = None
 
-# Load the right instance of Authentication based variable
+# Load the right instance of Authentication
 # based on the environmental variable Auth_type
 auth_type = getenv("AUTH_TYPE")
 
@@ -41,13 +41,21 @@ def before_request():
     if auth is None:
         return
 
-    if request.path not in excluded_paths:
-        if auth.require_auth(request.path, excluded_paths):
-            # Checking if authorization header is missing
-            if auth.authorization_header(request) is None:
-                abort(401)
+    # List of paths that don't require authentication.
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/'
+                      ]
+    # If the request path is not in the excluded_path, check for
+    # authentication.
+    if (request.path not in excluded_paths
+            and auth.require_auth(request.path, excluded_paths)):
 
-            # Checkinf if current user returns None
+        # Checking if authorization header is missing and
+        # 404 error.
+        if auth.authorization_header(request) is None:
+            abort(401)
+
+            # Checkinf if current user returns Non
             if auth.current_user(request) is None:
                 abort(403)
 
