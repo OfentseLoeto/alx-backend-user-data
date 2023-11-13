@@ -3,6 +3,7 @@
 The basic auth class.
 """
 from api.v1.auth.auth import Auth
+import base64
 
 
 class BasicAuth(Auth):
@@ -41,3 +42,23 @@ class BasicAuth(Auth):
         """
         auth = Auth()
         authorization_header = auth.authorization_header(request)
+
+    def decode_base64_authorization_header(self,
+                                           authorization_header: str) -> str:
+        """
+        Decode the base64 string and return thr decoded value as "utf-8"
+        string.
+        """
+        if authorization_header is None:
+            return None
+        if not isinstance(authorization_header, str):
+            return None
+
+        try:
+            decoded_byte = base64.b64decode(authorization_header)
+            # Coverts decoded bytes to utf-8 string
+            decoded_value = decoded_byte.decode('utf-8')
+            return decoded_value
+        except base64.binascii.Error:
+            # Handle cases when the input is not a valid base64 string
+            return None
