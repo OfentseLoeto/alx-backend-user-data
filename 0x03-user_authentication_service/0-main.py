@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-main_0.py
+0-main.py
 """
 from user import User
 
