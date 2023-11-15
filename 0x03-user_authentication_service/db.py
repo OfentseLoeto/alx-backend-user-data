@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
 Db module
+
+This module provides a DB class for interacting with the database.
 """
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
@@ -14,6 +16,14 @@ from user import Base, User
 class DB:
     """
     The database class
+
+    This class represents the database interaction and provides
+    methods for data manipulation.
+
+    Attributes:
+      _ engine: SQLAlchemy engine for database connection
+      _ session: SQLAlchemy session for database interaction
+
     """
     Session = sessionmaker()
 
@@ -56,9 +66,6 @@ class DB:
 
         # Commit changes to the database
         self._session.commit()
-
-        # Refresh the user instance to get the updated ID from the database
-        self._session.refresh(user)
 
         # Return the created user object
         return user
