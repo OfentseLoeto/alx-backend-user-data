@@ -9,7 +9,7 @@ app = Flask(__name__)
 AUTH = Auth()
 
 
-@app.route("/user", methods=["POST"])
+@app.route("/users", methods=["POST"])
 def register_user():
     """
     The App returns a message.
