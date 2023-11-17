@@ -49,7 +49,7 @@ class Auth:
             # find_user_by method from the DB class
             existing_user = self._db.find_user_by(email=email)
 
-            # If a user is found, it raises a ValueError with appropriate message
+            # If a user is found it raises a ValueError
             if existing_user:
                 raise ValueError(f"User {email} already exists")
 
