@@ -36,6 +36,7 @@ class RedactingFormatter(logging.Formatter):
     """
 
     REDACTION = "***"
+    FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
@@ -46,7 +47,7 @@ class RedactingFormatter(logging.Formatter):
         - fields (List[str]): A list of strings representing fields to
                               obfuscate.
         """
-        super(RedactingFormatter, self).__init__()
+        super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
