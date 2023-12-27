@@ -2,6 +2,8 @@
 """
 Obfuscate specified fields in the log message
 """
+import os
+import mysql.connector
 import logging
 import re
 from logging import StreamHandler
@@ -117,3 +119,28 @@ def get_logger() -> logging.Logger:
     logger.addHandler(logging.NullHandler())
 
     return logger
+
+
+def get_db():
+    """
+    Connect to the MySQL database using environment variables for credentials.
+
+    Returns:
+    - mysql.connector.connection.MySQLConnection: Database connector object.
+    """
+
+    # Retrieve database credentials from environmental variables
+    db_username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    db_password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME", "my_db")
+
+    # Creating a connection to mysql database
+    connection = mysql.connector.connect(
+            user=db_username,
+            password=db_password,
+            host=db_host,
+            database=db_name
+    )
+
+    return connection
