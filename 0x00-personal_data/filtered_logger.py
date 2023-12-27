@@ -127,6 +127,10 @@ def get_db():
 
     Returns:
     - mysql.connector.connection.MySQLConnection: Database connector object.
+
+    Raises:
+    - mysql.connector.Error: If an error occurs while connecting to the
+                             database.
     """
 
     # Retrieve database credentials from environmental variables
@@ -135,12 +139,18 @@ def get_db():
     db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     db_name = os.getenv("PERSONAL_DATA_DB_NAME", "my_db")
 
-    # Creating a connection to mysql database
-    connection = mysql.connector.connect(
-            user=db_username,
-            password=db_password,
-            host=db_host,
-            database=db_name
-    )
+    try:
+        # Creating a connection to mysql database
+        connection = mysql.connector.connect(
+                user=db_username,
+                password=db_password,
+                host=db_host,
+                database=db_name
+        )
+        return connection
+    except mysql.connector.Error as e:
+        # Handle connection errors, if any
+        print(f"Error connecting to the database: {e}")
+        raise
 
     return connection
