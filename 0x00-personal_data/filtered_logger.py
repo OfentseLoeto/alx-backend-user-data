@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Obfuscate specified fields in the log message
+"""
 import logging
 import re
 from logging import StreamHandler
@@ -23,7 +26,7 @@ class RedactingFormatter(logging.Formatter):
         - fields (List[str]): A list of strings representing fields to
                               obfuscate.
         """
-        super(RedactingFormatter, self).__init__(self.FORMAT)
+        super(RedactingFormatter, self).__init__()
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
