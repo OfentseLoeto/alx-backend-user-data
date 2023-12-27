@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
+"""
+Obfuscate specified fields in the log message
+"""
 import re
 from typing import List
 
 
-def filter_datum(fields: List[str], redaction: str, message: str,
-                 separator: str) -> str:
+def filter_datum(fields: List[str], redaction: str,
+                 message: str, separator: str) -> str:
     """
     Obfuscate specified fields in the log message.
 
@@ -19,12 +22,11 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     Returns:
     - str: The obfuscated log message.
     """
-    # Create a regular expression pattern to match the specified fields
+    # Creating a regular expression pattern to match the specified fields
     pattern = re.compile(
-            fr'({"|".join(map(re.escape, fields))})=[^{separator}]+'
+        fr'({"|".join(map(re.escape, fields))})=[^{separator}]+'
     )
 
-    # Use re.sub to perform the substitution with a single regex
+    # Using re.sub to perform the substitution with a single regex
     obfuscated_message = pattern.sub(fr'\1={redaction}', message)
-
     return obfuscated_message
