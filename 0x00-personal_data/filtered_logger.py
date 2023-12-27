@@ -47,7 +47,8 @@ class RedactingFormatter(logging.Formatter):
         Obfuscate specified fields in the log message.
 
         Arguments:
-        - fields (List[str]): A list of strings representing fields to obfuscate.
+        - fields (List[str]): A list of strings representing fields to
+                              obfuscate.
         - redaction (str): A string representing the value by which the field
                            will be obfuscated.
         - message (str): A string representing the log line.
@@ -65,7 +66,8 @@ class RedactingFormatter(logging.Formatter):
         Substitute specified fields with redaction in the log message.
 
         Arguments:
-        - fields (List[str]): A list of strings representing fields to substitute.
+        - fields (List[str]): A list of strings representing fields to
+                              substitute.
         - redaction (str): A string representing the value by which the field
                            will be substituted.
         - message (str): A string representing the log line.
@@ -81,8 +83,10 @@ class RedactingFormatter(logging.Formatter):
             message
         )
 
+
 # Create a constant tuple PII_FIELDS containing the fields considered as PII
 PII_FIELDS = ("name", "email", "phone", "ssn", "credit_card")
+
 
 def get_logger() -> logging.Logger:
     """
