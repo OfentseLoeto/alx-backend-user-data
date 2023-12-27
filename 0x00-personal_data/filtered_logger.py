@@ -26,7 +26,7 @@ class RedactingFormatter(logging.Formatter):
         - fields (List[str]): A list of strings representing fields to
                               obfuscate.
         """
-        super(RedactingFormatter, self).__init__()
+        super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
