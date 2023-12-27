@@ -4,7 +4,7 @@ Obfuscate specified fields in the log message
 """
 import re
 from typing import List
-import logging
+from logging import StreamHandler
 
 
 def filter_datum(fields: List[str], redaction: str,
