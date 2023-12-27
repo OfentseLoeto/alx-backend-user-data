@@ -112,4 +112,8 @@ def get_logger() -> logging.Logger:
     # Add the handler to the logger
     logger.addHandler(stream_handler)
 
+    # NullHandler to suppress messages when no other suitable
+    # handler is configured
+    logger.addHandler(logging.NullHandler())
+
     return logger
