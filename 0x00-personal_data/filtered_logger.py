@@ -1,38 +1,14 @@
 #!/usr/bin/env python3
-"""
-Obfuscate specified fields in the log message
-"""
+import logging
 import re
-from typing import List
 from logging import StreamHandler
-
-
-def filter_datum(fields: List[str], redaction: str,
-                 message: str, separator: str) -> str:
-    """
-    Obfuscate specified fields in the log message.
-
-    Arguments:
-    - fields (List[str]): A list of strings representing fields to obfuscate.
-    - redaction (str): A string representing the value by which the field
-                       will be obfuscated.
-    - message (str): A string representing the log line.
-    - separator (str): A string representing the character used to separate
-                       fields in the log line.
-
-    Returns:
-    - str: The obfuscated log message.
-    """
-    return re.sub(
-        fr'({"|".join(map(re.escape, fields))})=[^{separator}]+',
-        fr'\1={redaction}',
-        message
-    )
+from typing import List
 
 
 class RedactingFormatter(logging.Formatter):
     """
-    Redacting formatter class
+    Redacting Formatter class for obfuscating sensitive information in
+    log messages.
     """
 
     REDACTION = "***"
@@ -61,14 +37,52 @@ class RedactingFormatter(logging.Formatter):
         - str: The obfuscated log message.
         """
         log_message = super().format(record)
-        return filter_datum(
+        return self.filter_datum(
             self.fields, self.REDACTION, log_message, self.SEPARATOR
         )
 
+    def filter_datum(self, fields: List[str], redaction: str,
+                     message: str, separator: str) -> str:
+        """
+        Obfuscate specified fields in the log message.
 
-# Creating a constant tuple PII_FIELDS containing the fields considered as PII
+        Arguments:
+        - fields (List[str]): A list of strings representing fields to obfuscate.
+        - redaction (str): A string representing the value by which the field
+                           will be obfuscated.
+        - message (str): A string representing the log line.
+        - separator (str): A string representing the character used to separate
+                           fields in the log line.
+
+        Returns:
+        - str: The obfuscated log message.
+        """
+        return self.substitute_fields(fields, redaction, message, separator)
+
+    def substitute_fields(self, fields: List[str], redaction: str,
+                          message: str, separator: str) -> str:
+        """
+        Substitute specified fields with redaction in the log message.
+
+        Arguments:
+        - fields (List[str]): A list of strings representing fields to substitute.
+        - redaction (str): A string representing the value by which the field
+                           will be substituted.
+        - message (str): A string representing the log line.
+        - separator (str): A string representing the character used to separate
+                           fields in the log line.
+
+        Returns:
+        - str: The log message with specified fields substituted.
+        """
+        return re.sub(
+            fr'({"|".join(map(re.escape, fields))})=[^{separator}]+',
+            fr'\1={redaction}',
+            message
+        )
+
+# Create a constant tuple PII_FIELDS containing the fields considered as PII
 PII_FIELDS = ("name", "email", "phone", "ssn", "credit_card")
-
 
 def get_logger() -> logging.Logger:
     """
@@ -84,11 +98,11 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     # Creating a StreamHandler with RedactingFormatter
-    stream_handler = logging.StreamHandler()
+    stream_handler = StreamHandler()
     formatter = RedactingFormatter(fields=PII_FIELDS)
     stream_handler.setFormatter(formatter)
 
-    # Add handler to the logger
+    # Add the handler to the logger
     logger.addHandler(stream_handler)
 
     return logger
