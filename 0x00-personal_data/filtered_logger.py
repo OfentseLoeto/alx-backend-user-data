@@ -84,7 +84,7 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     # Creating a StreamHandler with RedactingFormatter
-    stram_handler = StreamHandler
+    stream_handler = logging.StreamHandler()
     formatter = RedactingFormatter(fields=PII_FIELDS)
     stream_handler.setFormatter(formatter)
 
