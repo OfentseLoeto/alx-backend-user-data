@@ -2,8 +2,10 @@
 """
 Obfuscate specified fields in the log message
 """
+from datetime import datetime
 import os
 import mysql.connector
+from mysql.connector import Error
 import logging
 import re
 from logging import StreamHandler
@@ -121,9 +123,15 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db():
+def get_db(username: str, password: str, host: str, database: str):
     """
-    Connect to the MySQL database using environment variables for credentials.
+    Connect to the MySQL database using provided credentials.
+
+    Arguments:
+    - username (str): Database username.
+    - password (str): Database password.
+    - host (str): Database host.
+    - database (str): Database name.
 
     Returns:
     - mysql.connector.connection.MySQLConnection: Database connector object.
@@ -132,25 +140,16 @@ def get_db():
     - mysql.connector.Error: If an error occurs while connecting to the
                              database.
     """
-
-    # Retrieve database credentials from environmental variables
-    db_username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
-    db_password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
-    db_host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
-    db_name = os.getenv("PERSONAL_DATA_DB_NAME", "holberton")
-
     try:
         # Creating a connection to mysql database
         connection = mysql.connector.connect(
-                user=db_username,
-                password=db_password,
-                host=db_host,
-                database=db_name
+            user=username,
+            password=password,
+            host=host,
+            database=database
         )
         return connection
     except mysql.connector.Error as e:
         # Handle connection errors, if any
         print(f"Error connecting to the database: {e}")
         raise
-
-    return connection
