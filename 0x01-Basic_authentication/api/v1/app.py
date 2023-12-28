@@ -45,7 +45,8 @@ def before_request():
                       ]
     # If the request path is not in the excluded_path, check for
     # authentication.
-    if (request.path not in excluded_paths and auth.require_auth(request.path, excluded_paths)):
+    if (request.path not in excluded_paths and
+            auth.require_auth(request.path, excluded_paths)):
 
         # Checking if authorization header is missing and
         # 404 error.
