@@ -124,6 +124,7 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+# Declaring a constant tuple named PII_FIELDS
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
