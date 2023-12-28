@@ -103,7 +103,10 @@ def get_logger() -> logging.Logger:
     Returns:
     - logging.Logger: The configured logger object.
     """
+    # Creates a logger object named "user_data"
     logger = logging.getLogger("user_data")
+
+    # Sets the logging level for the logger.
     logger.setLevel(logging.INFO)
 
     # Preventing messages from being propagated to other loggers
@@ -117,6 +120,7 @@ def get_logger() -> logging.Logger:
     # Add the handler to the logger
     logger.addHandler(stream_handler)
 
+    # Return the logger
     return logger
 
 
