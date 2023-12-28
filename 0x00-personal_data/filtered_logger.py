@@ -9,6 +9,7 @@ from mysql.connector import Error
 import logging
 import re
 from logging import StreamHandler
+import csv
 from typing import List
 
 
@@ -123,6 +124,9 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
 def get_db(username: str, password: str, host: str, database: str):
     """
     Connect to the MySQL database using provided credentials.
@@ -153,3 +157,26 @@ def get_db(username: str, password: str, host: str, database: str):
         # Handle connection errors, if any
         print(f"Error connecting to the database: {e}")
         raise
+
+
+def main():
+    logger = get_logger()
+
+    with open('user_data.csv', newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            log_message = (
+                f"name={row.get('name', '')}; "
+                f"email={row.get('email', '')}; "
+                f"phone={row.get('phone', '')}; "
+                f"ssn={row.get('ssn', '')}; "
+                f"password={row.get('password', '')}; "
+                f"ip={row.get('ip', '')}; "
+                f"last_login={row.get('last_login', '')}; "
+                f"user_agent={row.get('user_agent', '')};"
+            )
+            logger.info(log_message)
+
+
+if __name__ == "__main__":
+    main()
