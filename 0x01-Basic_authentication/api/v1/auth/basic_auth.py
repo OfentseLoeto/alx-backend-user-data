@@ -65,8 +65,9 @@ class BasicAuth(Auth):
             # Handle cases when the input is not a valid base64 string
             return None
 
-    def extract_user_credentials(self,
-                                 decoded_base64_authorization_header: str) -> (str, str):
+    def extract_user_credentials(
+            self,
+            decoded_base64_authorization_header: str) -> (str, str):
         """
         Extract user email, password from the base64 decoded value
         """
@@ -82,7 +83,8 @@ class BasicAuth(Auth):
         email, password = decoded_base64_authorization_header.split(':', 1)
         return email, password
 
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
         """Return the User instance based on email and password."""
         if user_email is None or not isinstance(user_email, str):
             return None
