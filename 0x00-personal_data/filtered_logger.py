@@ -102,21 +102,6 @@ def get_logger() -> logging.Logger:
 
     Returns:
     - logging.Logger: The configured logger object.
-
-    This function initializes and configures a logger named "user_data" with
-    the following settings:
-    - Logger level set to logging.INFO, indicating that only messages with INFO
-      level or higher will be logged.
-    - Propagation of messages to other loggers is disabled to prevent duplicate
-      logs in the application.
-    - A StreamHandler is added to the logger, which directs log messages to the
-      standard output (console).
-    - The formatter used for log messages is RedactingFormatter, which
-      obfuscates sensitive information based on the specified PII_FIELDS.
-
-    Example:
-    >>> logger = get_logger()
-    >>> logger.info("This is an example log message.")
     """
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
@@ -125,16 +110,12 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     # Creating a StreamHandler with RedactingFormatter
-    stream_handler = StreamHandler()
+    stream_handler = logging.StreamHandler()
     formatter = RedactingFormatter(fields=PII_FIELDS)
     stream_handler.setFormatter(formatter)
 
     # Add the handler to the logger
     logger.addHandler(stream_handler)
-
-    # NullHandler to suppress messages when no other suitable
-    # handler is configured
-    logger.addHandler(logging.NullHandler())
 
     return logger
 
