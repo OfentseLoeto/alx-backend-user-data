@@ -161,10 +161,30 @@ def get_db(username: str, password: str, host: str, database: str):
 
 
 def main():
+    """
+    Process user data from the 'user_data.csv' file, obfuscate sensitive
+    information, and log the sanitized data using the configured logger.
+
+    The function reads each row from the CSV file, extracts user information,
+    and generates a log message with obfuscated sensitive fields. The log
+    message is then logged using the 'user_data' logger with the configured
+    settings.
+
+    Note:
+    - Ensure that the 'user_data.csv' file is present in the same directory as
+      the script.
+
+    Returns:
+    - None
+    """
+    # Create and configure a logger named "user_data"
     logger = get_logger()
 
+    # Open the 'user_data.csv' file and read rows using DictReader
     with open('user_data.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
+
+        # Process each row and generate log messages
         for row in reader:
             log_message = (
                 f"name={row.get('name', '')}; "
@@ -176,6 +196,7 @@ def main():
                 f"last_login={row.get('last_login', '')}; "
                 f"user_agent={row.get('user_agent', '')};"
             )
+            # Log the sanitized user data using the 'user_data' logger
             logger.info(log_message)
 
 
