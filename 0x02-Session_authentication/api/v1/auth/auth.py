@@ -29,21 +29,22 @@ class Auth:
         if excluded_paths is None or not excluded_paths:
             return True
 
-        # Ensure that path end with trailing slash for accurate matching.
+        # Ensure that path ends with a trailing slash for accurate matching.
         path_with_slash = path if path.endswith('/') else path + '/'
-        exluded_paths = [p if p.endswith('/') else p + '/' for p in
-                         excluded_paths
-                         ]
+        excluded_paths = [
+                p if p.endswith('/') else p + '/' for p in excluded_paths
+                ]
         return path_with_slash not in excluded_paths
 
     def authorization_header(self, request=None) -> str:
         """
         Get the value of the Authorization header.
+
         Args:
           - request: Flask request object
 
-        returns:
-          - str: Value of the Authorization header if it exist, or None.
+        Returns:
+          - str: Value of the Authorization header if it exists, or None.
         """
         if request is None:
             return None
@@ -55,7 +56,7 @@ class Auth:
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
-        User method that return none
+        User method that returns None.
         """
         return None
 
