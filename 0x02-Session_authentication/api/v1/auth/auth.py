@@ -10,19 +10,19 @@ from typing import List, TypeVar
 
 class Auth:
     """
-    Auth class
+    Auth class provides basic authentication functionalities.
     """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         Check if authentication is required for the given path.
 
         Args:
-          - Path (str): The path to be checked for authentication
-          - excluded_paths (List[str]): List of paths that are excluded from
-            authentication
+          - path (str): The path to be checked for authentication.
+          - excluded_paths (List[str]): List of paths that are excluded
+            from authentication.
 
         Returns:
-          - bool: True if authentication is required, False otherwise
+          - bool: True if authentication is required, False otherwise.
         """
         if path is None:
             return True
@@ -41,7 +41,7 @@ class Auth:
         Get the value of the Authorization header.
 
         Args:
-          - request: Flask request object
+          - request: Flask request object.
 
         Returns:
           - str: Value of the Authorization header if it exists, or None.
@@ -56,20 +56,26 @@ class Auth:
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
-        User method that returns None.
+        Placeholder method that returns None.
+
+        Args:
+          - request: Flask request object.
+
+        Returns:
+          - None
         """
         return None
 
     def session_cookie(self, request: Request = None) -> str:
         """
-        Return the value of the cookie named _my_session_id from request.
+        Return the value of the cookie named _my_session_id from the request.
 
         Args:
           - request (Request): Flask Request object.
 
         Returns:
-          - Cookie value or None if request is None or the cookie is
-            not present.
+          - str: Cookie value or None if request is None or the cookie is
+                 not present.
         """
         if request is None:
             return None

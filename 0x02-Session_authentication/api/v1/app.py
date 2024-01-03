@@ -45,36 +45,26 @@ def before_request():
         return
 
     # List of paths that don't require authentication.
-    excluded_paths = [
-            '/api/v1/status/',
-            '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
-    ]
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/', '/api/v1/auth_session/login/']
 
-    # If the request path is not in the excluded_path, check
-    # for authentication.
+    # If the request path is not in the excluded_path, check for
+    # authentication
     if (request.path not in excluded_paths and
             auth.require_auth(request.path, excluded_paths)):
 
-        # Checking if authorization header is missing and 404 error.
-        authorization_header = auth.authorization_header(request)
-
-        # Checking if authorization header is missing and 401 error.
-        if auth.authorization_header(request) is None:
-            print("Authorization header is missing. Aborting with 401.")
+        # Checking if both authorization header and session cookie are missing
+        # return 401 error.
+        if (auth.authorization_header(request) is None and
+                auth.session_cookie(request)) is None:
             abort(401)
 
         # Assign the result of auth.current_user(request) to
         # request.current_user
-        current_user = auth.current_user(request)
-        request.current_user = current_user
+        request.current_user = auth.current_user(request)
 
-        print(f"Authorization header: {authorization_header}")
-        print(f"Current user: {current_user}")
-
-        # Checking if current_user is None
+        # Checking if current user returns None, return 403 error.
         if request.current_user is None:
-            print("Current user is None. Aborting with 403.")
             abort(403)
 
 
