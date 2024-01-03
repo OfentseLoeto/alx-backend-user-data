@@ -2,6 +2,7 @@
 """
 Implemetation of an Auth class
 """
+
 from flask import Request
 from os import getenv
 from flask import request
