@@ -3,6 +3,8 @@
 Route module for the API
 """
 from api.v1.auth import auth
+from api.v1.auth.basic_auth import BasicAuth
+from api.v1.auth.session_auth import SessionAuth
 from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
@@ -26,6 +28,9 @@ if auth_type:
     if auth_type == "basic_auth":
         # Create an instance of basic_auth if auth_type is basic_auth.
         auth = BasicAuth()
+    elif auth_type == "session_auth":
+        # Create an instance of SessionAuth if AUTH_TYPE is session_auth
+        auth = SessionAuth()
     else:
         # If AUTH_TYPE is not basic_auth, use Auth
         auth = Auth()
