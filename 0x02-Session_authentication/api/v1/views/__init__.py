@@ -5,7 +5,11 @@ from flask import Blueprint
 
 app_views = Blueprint("app_views", __name__, url_prefix="/api/v1")
 
-from api.v1.views.index import *
-from api.v1.views.users import *
+from .index import *
+from .users import *
+from .session_auth import session_auth_views
 
 User.load_from_file()
+
+# Add new view to the blueprint
+app_views.register_blueprint(session_auth_views)
