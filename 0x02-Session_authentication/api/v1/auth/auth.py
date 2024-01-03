@@ -2,6 +2,8 @@
 """
 Implemetation of an Auth class
 """
+from flask import Request
+from os import getenv
 from flask import request
 from typing import List, TypeVar
 
@@ -56,3 +58,19 @@ class Auth:
         User method that return none
         """
         return None
+
+    def session_cookie(self, request: Request = None) -> str:
+        """
+        Return the value of the cookie named _my_session_id from request.
+
+        Args:
+          - request (Request): Flask Request object.
+
+        Returns:
+          - str: Cookie value.
+        """
+        if request is None:
+            return None
+
+        session_name = getenv("SESSION_NAME", "_my_session_id")
+        return request.cookies.get(session_name, None)
