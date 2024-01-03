@@ -67,7 +67,8 @@ class Auth:
           - request (Request): Flask Request object.
 
         Returns:
-          - str: Cookie value.
+          - Cookie value or None if request is None or the cookie is
+            not present.
         """
         if request is None:
             return None

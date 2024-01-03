@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" Main3
+"""
+Cookie server
 """
 from flask import Flask, request
 from api.v1.auth.auth import Auth
